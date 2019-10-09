@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  rxcui: 1
+  reminder: 1
+  type: 
+
+two:
+  name: MyString
+  rxcui: 1
+  reminder: 1
+  type: 
