@@ -5,6 +5,7 @@ class CreateMedications < ActiveRecord::Migration[5.2]
       t.string :name
       t.integer :rxcui
       t.integer :reminder
+      t.string :alternate_name
       t.string :medication_type
 
       t.timestamps

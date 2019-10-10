@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_171937) do
     t.string "name"
     t.integer "rxcui"
     t.integer "reminder"
+    t.string "alternate_name"
     t.string "medication_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
