@@ -4,7 +4,6 @@ class MedicationsController < ApplicationController
     
     def get_medications_list_by_search_term 
         #This will start an API fetch for a list of medications that match the search term.
-        byebug
         medicine_search_term = params["search_term"]
         response = RestClient.get("https://rxnav.nlm.nih.gov/REST/Prescribe/drugs.json/?name=#{medicine_search_term}") 
         medication_json = JSON.parse(response.body)
@@ -12,7 +11,7 @@ class MedicationsController < ApplicationController
         @all_medications_list = {
             medications_results: []
         }
-
+        
         medication_json["drugGroup"]["conceptGroup"].each do |med_concept|
             if med_concept["tty"] === "SCD"
                 med_concept["conceptProperties"].each do |drug_type|
@@ -21,11 +20,10 @@ class MedicationsController < ApplicationController
                     name: drug_type["name"],
                     synonym: drug_type["synonym"],
                     }
-                    @all_medications_list[:medication_results] << medication_hash
+                    @all_medications_list[:medications_results] << medication_hash
                 end
             end
         end
-
         render :json => @all_medications_list
     end
 
