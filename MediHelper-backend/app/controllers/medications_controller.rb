@@ -16,15 +16,45 @@ class MedicationsController < ApplicationController
         reminder: 1571352773,
         name: params["medication"]["name"],
         alternate_name: params["medication"]["synonym"],
+        img_uri: "",
         medication_type: @type)
         
-        render :json => @user.medications
+        @sorted = Medication.alphabetize_names(@user.medications)
+
+        render :json => @sorted
+    end 
+
+    def change_image
+        @medication = Medication.all.find_by(id: params["medication"]["id"])
+        @medication.update(img_uri: params["photoData"]["uri"])
+        @user = User.all.find_by(id: params["userID"])
+
+        @sorted = Medication.alphabetize_names(@user.medications)
+
+        render :json => @sorted
+    end
+
+    def delete_medication
+        @user = User.find_by(id: params["userID"])
+        # @user.medications.each do |medication|
+        #     if medication.rxcui == params["medication"]["rxcui"]
+        #         medication.delete()
+        #     end
+        # end
+        @medication = Medication.all.find_by(id: params["medication"]["id"])
+        @medication.delete()
+
+        @sorted = Medication.alphabetize_names(@user.medications)
+
+        render :json => @sorted
     end
 
     def get_users_medications
         @user = User.find_by(id: params["userID"])
 
-        render :json => @user.medications
+        @sorted = Medication.alphabetize_names(@user.medications)
+
+        render :json => @sorted
     end
     
     def get_medications_list_by_search_term 
