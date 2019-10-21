@@ -13,7 +13,7 @@ Medication.destroy_all
 
 def create_users
     50.times do 
-        User.create(name:Faker::Name.unique.name, username: Faker::Coffee.blend_name, email: "1234@gmail.com")
+        User.create(name:Faker::Name.unique.name, username: Faker::Coffee.blend_name, email: "1234@gmail.com", img_url:"https://www.freepngimg.com/thumb/doctor_symbol/2-2-doctor-symbol-caduceus-png-clipart-thumb.png", token: "")
     end
     puts "created users"
 end
