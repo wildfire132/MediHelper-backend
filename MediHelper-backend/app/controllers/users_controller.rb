@@ -5,6 +5,12 @@ class UsersController < ApplicationController
         render :json => @users
     end
 
+    def edit_user_token 
+        @user = User.find_by(username: params["userData"]["id"])
+        # @user = User.find_by
+        render :json => @user
+    end
+
     def create
         @user = User.find_by(username: params["userData"]["id"])
         if @user == nil 

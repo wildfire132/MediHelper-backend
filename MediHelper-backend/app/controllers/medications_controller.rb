@@ -64,18 +64,32 @@ class MedicationsController < ApplicationController
         medication_json = JSON.parse(response.body)
 
         @all_medications_list = {
-            medications_results: []
+            search_term: medicine_search_term,
+            medications_results: [],
+            results_available: false,
+            oral_medications: [],
+            topical_medications: [],
+            injection_medications: [],
+            other_medications: []
         }
 
-        med_concept = medication_json["drugGroup"]["conceptGroup"].last
+        if !!medication_json["drugGroup"]["conceptGroup"] 
+            med_concept = medication_json["drugGroup"]["conceptGroup"].last
 
-        med_concept["conceptProperties"].each do |drug_type|
-            medication_hash = {
-            rxcui: drug_type["rxcui"],
-            name: drug_type["name"],
-            synonym: drug_type["synonym"],
-            }
-            @all_medications_list[:medications_results] << medication_hash
+            @all_medications_list["results_available"] = true
+
+            med_concept["conceptProperties"].each do |drug_type|
+                type = Medication.medication_type(drug_type["name"])
+
+                medication_hash = {
+                rxcui: drug_type["rxcui"],
+                name: drug_type["name"],
+                synonym: drug_type["synonym"],
+                type: type
+                }
+                @all_medications_list[:medications_results] << medication_hash
+                @all_medications_list[:"#{type}_medications"] << medication_hash
+            end
         end
 
         render :json => @all_medications_list

@@ -9,7 +9,7 @@ class Medication < ApplicationRecord
             return "oral"
         elsif medication_name.downcase.include?("topical")
             return "topical"
-        elsif medication_name.downcase.include?("injection")
+        elsif medication_name.downcase.include?("injection") || medication_name.downcase.include?("injectable")
             return "injection"
         else 
             return "other"
@@ -20,7 +20,6 @@ class Medication < ApplicationRecord
         new_medication_array = array_of_medication_objects.sort do |medicationA,medicationB|
             medicationA.name.downcase <=> medicationB.name.downcase
         end
-        puts new_medication_array
         return new_medication_array
     end
 end

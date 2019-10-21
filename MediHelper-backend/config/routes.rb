@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   post '/get-users-medications', to: "medications#get_users_medications"
   post '/delete-medication', to: "medications#delete_medication"
   post '/change-medication-image', to: "medications#change_image"
+  post '/add-token-to-user-data', to: "users#edit_user_token"
 end
