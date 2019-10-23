@@ -10,14 +10,22 @@ class MedicationsController < ApplicationController
     def create
         @user = User.find_by(id:params["userID"])
         @type = Medication.medication_type(params["medication"]["name"])
+
+        @total_dosages = Medication.calculate_total_dosages(params["dosesRemaining"].to_i, params["amountUsedPerDose"].to_i)
+
         new_medication = Medication.create(
-        user_id: params["userID"],
-        rxcui: params["medication"]["rxcui"],
-        reminder: 1571352773,
-        name: params["medication"]["name"],
-        alternate_name: params["medication"]["synonym"],
-        img_uri: "",
-        medication_type: @type)
+            user_id: params["userID"],
+            rxcui: params["medication"]["rxcui"],
+            name: params["medication"]["name"],
+            alternate_name: params["medication"]["synonym"],
+            img_uri: "",
+            remaining_doses: params["dosesRemaining"].to_i,
+            amount_taken_per_dose: params["amountUsedPerDose"].to_i,
+            notification_start_date: params["notificationStartDate"],
+            repeat_time: params["repeatIntervalTime"],
+            repeat_days: params["repeatIntervalDays"],
+            dosages_left: @total_dosages,
+            medication_type: @type)
         
         @sorted = Medication.alphabetize_names(@user.medications)
 
@@ -34,13 +42,18 @@ class MedicationsController < ApplicationController
         render :json => @sorted
     end
 
+    # def decrease_remaining_dosages
+    #     @medication = Medication.all.find_by(id: params["medication"]["id"])
+    #     @medication.update(dosages_left: @medication.dosages_left -1)
+    #     @user = User.all.find_by(id: params["userID"])
+
+    #     @sorted = Medication.alphabetize_names(@user.medications)
+
+    #     render :json => @sorted
+    # end
+
     def delete_medication
         @user = User.find_by(id: params["userID"])
-        # @user.medications.each do |medication|
-        #     if medication.rxcui == params["medication"]["rxcui"]
-        #         medication.delete()
-        #     end
-        # end
         @medication = Medication.all.find_by(id: params["medication"]["id"])
         @medication.delete()
 
@@ -91,7 +104,6 @@ class MedicationsController < ApplicationController
                 @all_medications_list[:"#{type}_medications"] << medication_hash
             end
         end
-
         render :json => @all_medications_list
     end
 

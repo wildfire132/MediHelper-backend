@@ -22,4 +22,9 @@ class Medication < ApplicationRecord
         end
         return new_medication_array
     end
+
+    def self.calculate_total_dosages(remaining_doses, amount_taken_per_dose)
+        total_dosages = remaining_doses/amount_taken_per_dose
+        return total_dosages
+    end
 end

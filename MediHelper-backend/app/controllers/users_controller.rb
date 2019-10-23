@@ -6,8 +6,8 @@ class UsersController < ApplicationController
     end
 
     def edit_user_token 
-        @user = User.find_by(username: params["userData"]["id"])
-        # @user = User.find_by
+        @user = User.find_by(id: params["userID"])
+        @user.update(token: params["token"])
         render :json => @user
     end
 
