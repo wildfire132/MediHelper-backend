@@ -42,15 +42,16 @@ class MedicationsController < ApplicationController
         render :json => @sorted
     end
 
-    # def decrease_remaining_dosages
-    #     @medication = Medication.all.find_by(id: params["medication"]["id"])
-    #     @medication.update(dosages_left: @medication.dosages_left -1)
-    #     @user = User.all.find_by(id: params["userID"])
+    def update_dosage
+        @medication = Medication.all.find_by(id: params["medication"]["id"])
+        new_dosage = (@medication.dosages_left) - 1
+        @medication.update(dosages_left: new_dosage)
+        @user = User.all.find_by(id: params["user_id"])
 
-    #     @sorted = Medication.alphabetize_names(@user.medications)
+        @sorted = Medication.alphabetize_names(@user.medications)
 
-    #     render :json => @sorted
-    # end
+        render :json => @sorted
+    end
 
     def delete_medication
         @user = User.find_by(id: params["userID"])
